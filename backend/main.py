@@ -22,7 +22,7 @@ load_dotenv()
 
 from database import Base, engine
 import models
-from routes import upload, doubt, summarize, quiz, chat, analytics, notifications, search
+from routes import upload, doubt, summarize, quiz, chat, analytics, notifications, search, auth
 
 # Automatically create all SQL database tables in SQLite/PostgreSQL upon startup
 Base.metadata.create_all(bind=engine)
@@ -70,6 +70,7 @@ app.include_router(chat.router)
 app.include_router(analytics.router)
 app.include_router(notifications.router)
 app.include_router(search.router)
+app.include_router(auth.router)
 
 @app.get("/")
 async def root():

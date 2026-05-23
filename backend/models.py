@@ -2,6 +2,21 @@ import datetime
 from sqlalchemy import Column, Integer, String, Float, DateTime, Date, Boolean, Text
 from database import Base
 
+class User(Base):
+    """
+    SQLAlchemy model representing a platform user.
+    """
+    __tablename__ = "users"
+
+    id = Column(Integer, primary_key=True, index=True)
+    username = Column(String, unique=True, index=True, nullable=False)
+    email = Column(String, unique=True, index=True, nullable=False)
+    hashed_password = Column(String, nullable=False)
+    full_name = Column(String, nullable=True)
+    avatar_url = Column(String, nullable=True)
+    created_at = Column(DateTime, default=datetime.datetime.utcnow)
+
+
 class StudySession(Base):
     """
     SQLAlchemy model representing a recorded student study session.
