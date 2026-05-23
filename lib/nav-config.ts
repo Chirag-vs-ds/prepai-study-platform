@@ -15,5 +15,5 @@ export const navItems = [
   { icon: Sparkles, label: "AI Summarizer", href: "#summarizer", id: "summarizer" },
   { icon: FileText, label: "Study Material", href: "#materials", id: "materials" },
   { icon: BarChart3, label: "Analytics", href: "#analytics", id: "analytics" },
-  { icon: Settings, label: "Settings", href: "#settings", id: "settings" },
+  { icon: Settings, label: "Settings", href: "/settings", id: "settings" },
 ];

@@ -89,10 +89,12 @@ export function QuizSection({
   activeFilename = null,
   activeOriginalName = null,
   onQuizAttempt,
+  userId = "default_student",
 }: {
   activeFilename?: string | null;
   activeOriginalName?: string | null;
   onQuizAttempt?: () => void;
+  userId?: string;
 }) {
   const [selectedSubject, setSelectedSubject] = useState<string | null>(null);
   
@@ -172,7 +174,7 @@ export function QuizSection({
           quiz_title: `AI Practice Quiz: ${activeOriginalName || "Textbook"}`,
           score: finalScore,
           total_questions: questions.length,
-          user_id: "default_student"
+          user_id: userId
         });
         
         if (onQuizAttempt) {

@@ -40,10 +40,12 @@ export function DoubtSolver({
   activeFilename = null,
   activeOriginalName = null,
   onSessionLogged,
+  userId = "default_student",
 }: {
   activeFilename?: string | null;
   activeOriginalName?: string | null;
   onSessionLogged?: () => void;
+  userId?: string;
 }) {
   const [query, setQuery] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -59,7 +61,7 @@ export function DoubtSolver({
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const fetchDoubtHistory = () => {
-    api.getDoubtHistory()
+    api.getDoubtHistory(userId)
       .then((data) => {
         if (data.success && data.history) {
           setRecentDoubts(data.history);
@@ -70,7 +72,7 @@ export function DoubtSolver({
 
   useEffect(() => {
     fetchDoubtHistory();
-  }, []);
+  }, [userId]);
 
   useEffect(() => {
     const handlePastDoubt = (e: Event) => {
@@ -168,7 +170,7 @@ export function DoubtSolver({
         api.logStudySession({
           subject: activeFilename ? "PDF Analysis" : "Doubt Solving",
           minutes: 2,
-          user_id: "default_student"
+          user_id: userId
         })
         .then((sData) => {
           if (sData.success && onSessionLogged) {

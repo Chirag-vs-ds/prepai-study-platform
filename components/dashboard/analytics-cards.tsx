@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 import { api } from "@/lib/api";
 import { Badge } from "@/components/ui/badge";
 
-export function AnalyticsCards({ trigger = 0 }: { trigger?: number }) {
+export function AnalyticsCards({ trigger = 0, userId = "default_student" }: { trigger?: number; userId?: string }) {
   const [metrics, setMetrics] = useState({
     study_time_minutes: 370,
     study_time_hours: 6.2,
@@ -21,7 +21,7 @@ export function AnalyticsCards({ trigger = 0 }: { trigger?: number }) {
 
   useEffect(() => {
     setIsLoading(true);
-    api.getAnalytics("default_student")
+    api.getAnalytics(userId)
       .then((data) => {
         if (data.success && data.metrics) {
           setMetrics(data.metrics);
@@ -35,7 +35,7 @@ export function AnalyticsCards({ trigger = 0 }: { trigger?: number }) {
       .finally(() => {
         setIsLoading(false);
       });
-  }, [trigger]);
+  }, [trigger, userId]);
 
   if (isLoading) {
     return (

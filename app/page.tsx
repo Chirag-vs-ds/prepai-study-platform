@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useAuth } from "@/lib/auth-context";
 import { Sidebar } from "@/components/dashboard/sidebar";
 import { Header } from "@/components/dashboard/header";
 import { AnalyticsCards } from "@/components/dashboard/analytics-cards";
@@ -17,6 +18,9 @@ import { api } from "@/lib/api";
 import { navItems } from "@/lib/nav-config";
 
 export default function Dashboard() {
+  const { user, isAuthenticated } = useAuth();
+  const userId = isAuthenticated && user ? user.username : "default_student";
+
   const [sidebarOpen, setSidebarOpen] = useState(false);
   
   // Shared States for PDF RAG and dynamic analytics re-fetching
@@ -53,14 +57,14 @@ export default function Dashboard() {
 
   // Fetch the daily streak dynamically from the database to sync the sidebars!
   useEffect(() => {
-    api.getAnalytics("default_student")
+    api.getAnalytics(userId)
       .then((data) => {
         if (data.success && data.metrics) {
           setCurrentStreak(data.metrics.current_streak);
         }
       })
       .catch((err) => console.error("Error fetching streak count:", err));
-  }, [analyticsTrigger]);
+  }, [analyticsTrigger, userId]);
 
   const triggerRefresh = () => {
     setAnalyticsTrigger((prev) => prev + 1);
@@ -142,7 +146,7 @@ export default function Dashboard() {
           {/* Analytics Cards (re-fetches dynamically!) */}
           <section id="dashboard">
             <ErrorBoundary>
-              <AnalyticsCards trigger={analyticsTrigger} />
+              <AnalyticsCards trigger={analyticsTrigger} userId={userId} />
             </ErrorBoundary>
           </section>
 
@@ -156,6 +160,7 @@ export default function Dashboard() {
                     activeFilename={activeFilename}
                     activeOriginalName={activeOriginalName}
                     onQuizAttempt={triggerRefresh} 
+                    userId={userId}
                   />
                 </ErrorBoundary>
               </section>
@@ -165,6 +170,7 @@ export default function Dashboard() {
                     activeFilename={activeFilename} 
                     activeOriginalName={activeOriginalName}
                     onSessionLogged={triggerRefresh}
+                    userId={userId}
                   />
                 </ErrorBoundary>
               </section>
@@ -195,7 +201,7 @@ export default function Dashboard() {
 
               <section id="analytics">
                 <ErrorBoundary>
-                  <WeakTopics />
+                  <WeakTopics userId={userId} />
                 </ErrorBoundary>
               </section>
             </div>

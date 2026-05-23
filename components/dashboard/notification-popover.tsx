@@ -12,15 +12,16 @@ import { cn } from "@/lib/utils";
 
 interface NotificationPopoverProps {
   triggerRefresh?: () => void;
+  userId?: string;
 }
 
-export function NotificationPopover({ triggerRefresh }: NotificationPopoverProps) {
+export function NotificationPopover({ triggerRefresh, userId = "default_student" }: NotificationPopoverProps) {
   const [notifications, setNotifications] = React.useState<NotificationItem[]>([]);
   const [unreadCount, setUnreadCount] = React.useState(0);
   const [refreshTrigger, setRefreshTrigger] = React.useState(0);
 
   React.useEffect(() => {
-    api.getNotifications("default_student")
+    api.getNotifications(userId)
       .then((res) => {
         if (res.success) {
           setNotifications(res.notifications);
@@ -28,7 +29,7 @@ export function NotificationPopover({ triggerRefresh }: NotificationPopoverProps
         }
       })
       .catch((err) => console.error("Failed to load notifications:", err));
-  }, [refreshTrigger]);
+  }, [refreshTrigger, userId]);
 
   // Expose a custom event for triggering notification refreshes from routes
   React.useEffect(() => {
@@ -56,7 +57,7 @@ export function NotificationPopover({ triggerRefresh }: NotificationPopoverProps
 
   const handleMarkAllRead = async () => {
     try {
-      const res = await api.markAllNotificationsRead("default_student");
+      const res = await api.markAllNotificationsRead(userId);
       if (res.success) {
         setNotifications((prev) => prev.map((n) => ({ ...n, is_read: true })));
         setUnreadCount(0);

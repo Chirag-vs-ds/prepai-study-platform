@@ -28,7 +28,7 @@ function getAccuracyTextColor(accuracy: number) {
   return "text-green-500";
 }
 
-export function WeakTopics() {
+export function WeakTopics({ userId = "default_student" }: { userId?: string }) {
   const [topics, setTopics] = useState<FocusArea[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -37,7 +37,7 @@ export function WeakTopics() {
     const loadData = async () => {
       try {
         setLoading(true);
-        const data = await fetchFocusAreas();
+        const data = await fetchFocusAreas(userId);
         setTopics(data);
         setError(null);
       } catch (err) {
@@ -48,7 +48,7 @@ export function WeakTopics() {
       }
     };
     loadData();
-  }, []);
+  }, [userId]);
 
   // Generate dynamic recommendation text based on the weakest topics
   const getRecommendation = () => {

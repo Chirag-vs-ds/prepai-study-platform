@@ -150,9 +150,9 @@ class ApiClient {
 export const api = new ApiClient();
 
 // Backward compatibility wrapper for weak-topics component
-export async function fetchFocusAreas(retries = 3, delay = 1000): Promise<FocusArea[]> {
+export async function fetchFocusAreas(userId = "default_student", retries = 3, delay = 1000): Promise<FocusArea[]> {
   try {
-    return await api.getFocusAreas("default_student");
+    return await api.getFocusAreas(userId);
   } catch (error) {
     console.error("fetchFocusAreas failed:", error);
     return [];

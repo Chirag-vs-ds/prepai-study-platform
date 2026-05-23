@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import {
   ChevronLeft,
   ChevronRight,
@@ -68,7 +69,7 @@ export function Sidebar({ streak = 7 }: { streak?: number }) {
           {navItems.map((item) => {
             const isActive = item.href === activeHash;
             return (
-              <a
+              <Link
                 key={item.label}
                 href={item.href}
                 className={cn(
@@ -80,20 +81,20 @@ export function Sidebar({ streak = 7 }: { streak?: number }) {
               >
                 <item.icon className="h-5 w-5 flex-shrink-0" />
                 {!collapsed && <span>{item.label}</span>}
-              </a>
+              </Link>
             );
           })}
         </nav>
 
         {/* Help */}
         <div className="border-t border-sidebar-border p-3">
-          <a
+          <Link
             href="#help"
             className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-muted-foreground hover:bg-sidebar-accent hover:text-sidebar-foreground transition-colors"
           >
             <HelpCircle className="h-5 w-5 flex-shrink-0" />
             {!collapsed && <span>Help & Support</span>}
-          </a>
+          </Link>
         </div>
 
         {/* Collapse Toggle */}
